@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
+import { doGetFile, doPostFile } from "../helpers/axios-helper";
 
 const fileTypes = ["CSV", "ZIP"];
-interface IfileType {
+export interface IfileType {
     name: string,
     size: number,
     lastModified: number,
@@ -16,6 +17,8 @@ function DragDrop() {
     const [file, setFile] = useState<IfileType | null>(null);
     const handleChange = (file: IfileType) => {
         setFile(file);
+        // doPostFile(file);
+        doGetFile();
     };
 
     return (
