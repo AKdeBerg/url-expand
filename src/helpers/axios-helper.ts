@@ -15,15 +15,22 @@ export const doGetFile = async () => {
     // console.log('res for get', res);
 }
 
-export const doPostFile = async (file: IfileType) => {
+export const doPostFile = async (file: FormData) => { 
     
-    let res = await axios.post('http://localhost:4000/upload', file)
-        .then((response) => {
-        console.log(response);
-        }, (error) => {
-        console.log(error);
-    });
-
+    try {
+        let res = await axios.post('http://localhost:4000/upload', file, {
+            headers: {
+                'Content-type': 'multipart/form-data'
+            }
+        });
+        return res.data;
+    } catch (err) {
+        if(err.response.status === 500) {
+            console.log('Server throws error');
+        } else {
+            console.log(err.response.data.msg)
+        }
+    }
     //let data = res.data;
     //console.log(data);
 }
