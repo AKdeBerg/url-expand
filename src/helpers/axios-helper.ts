@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { IfileType } from '../components/upload';
 
 export const doGetFile = async () => {
     
@@ -28,10 +27,8 @@ export const doPostFile = async (file: FormData) => {
         if(err.response.status === 500) {
             console.log('Server throws error');
         } else {
-            console.log(err.response.data.msg)
+            console.log('Something went wrong in client side')
         }
     }
-    //let data = res.data;
-    //console.log(data);
 }
 

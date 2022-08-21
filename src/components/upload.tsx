@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { doGetFile, doPostFile } from "../helpers/axios-helper";
+import ToastMessage from "./toast-message";
 
-const fileTypes = ["CSV", "ZIP"];
 export interface IfileType {
     name: string,
     size: number,
@@ -14,6 +14,7 @@ export interface IfileType {
 
 function Upload() {
     const [file, setFile] = useState('')
+    const [messge, setMessge] = useState<string>('');
 
     const handleChange = (e: React.SyntheticEvent<EventTarget>) => {
         setFile((e.target as HTMLFormElement).files[0]);
@@ -23,22 +24,28 @@ function Upload() {
         e.preventDefault();
         const formdata = new FormData();
         formdata.append('file', file)
-        doPostFile(formdata);
+        const response = doPostFile(formdata);
+        response.then((data) => {
+            setMessge(data);
+        })
     }
 
     return (
-        <div className="text-center d-flex justify-content-center align-items-center flex-column">
-            <div className="mb-3">
-                <form onSubmit={onSubmit}>
-                    <div className="mb-3">
-                        <input className="form-control" type="file" id="formFile" accept=".zip, .csv" onChange={handleChange} />
-                    </div>
-                    <input type="submit" value="Upload" className="btn btn-primary btn-block mb-3" />
-                </form>
-            </div>
-            {/* <FileUploader handleChange={handleChange} name="file" types={fileTypes} multiple={false} maxSize={2} />
+        <Fragment>
+            <div className="text-center d-flex justify-content-center align-items-center flex-column">
+                {messge ? <ToastMessage msg={messge} /> : null}
+                <div className="mb-3">
+                    <form onSubmit={onSubmit}>
+                        <div className="mb-3">
+                            <input className="form-control" type="file" id="formFile" accept=".zip, .csv" onChange={handleChange} />
+                        </div>
+                        <input type="submit" value="Upload" className="btn btn-primary btn-block mb-3" />
+                    </form>
+                </div>
+                {/* <FileUploader handleChange={handleChange} name="file" types={fileTypes} multiple={false} maxSize={2} />
             <p>{file ? `File name: ${file.name}` : "no files uploaded yet"}</p> */}
-        </div>
+            </div>
+        </Fragment>
     );
 }
 
