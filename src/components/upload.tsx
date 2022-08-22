@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { FileUploader } from "react-drag-drop-files";
-import { doGetFile, doPostFile } from "../helpers/axios-helper";
+import { doPostFile } from "../helpers/axios-helper";
 import ToastMessage from "./toast-message";
 
 export interface IfileType {
